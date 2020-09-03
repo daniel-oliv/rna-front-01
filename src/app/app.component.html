@@ -3,8 +3,12 @@
 [(ngModel)]="newName"
 >
 
-<button (click)="criarDataset($event)" >Criar dataset</button>
-<button *ngIf="selectedDataset?.data[0]"
+<button 
+class="btn btn-primary"
+(click)="criarDataset($event)" >Criar dataset</button>
+<button 
+class="btn btn-primary"
+*ngIf="selectedDataset?.data[0]"
 (click)="saveDataset($event)" >Salvar dataset</button>
 <br>
 <br><br>
@@ -16,12 +20,18 @@
   <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
 </select>
 <br><br>
-<button *ngIf="selectedDataset"
+<button 
+class="btn btn-primary"
+*ngIf="selectedDataset"
 (click)="mostrarDataset($event)" >Mostrar dataset</button>
 <br>
-<button>Treinar rede</button>
- 
-<button>Testar rede</button>
+<button
+class="btn btn-primary"
+>Treinar rede</button>
+<br>
+<button
+class="btn btn-primary"
+>Testar rede</button>
 
 <br><br><br>
 

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { ImageDigitDatum } from './utils/drawing-square/image-digit-datum';
-import { Dataset } from './utils/drawing-square/dataset';
+import { ImgCharDatum } from './shared/interfaces/image-digit-datum';
+import { Dataset } from './shared/interfaces/dataset';
+import { ImgDataService } from './shared/websocket/img-data.service';
+import { generateTargets } from './shared/helpers/dataset';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,12 @@ export class AppComponent {
   startedDataset: Dataset;
   newName: string;
 
+  constructor(
+
+  /* private imgService:  ImgDataService */
+  
+  ){}
+
   ngOnInit(){
     //TODO baixar datasets do back
   }
@@ -25,8 +33,8 @@ export class AppComponent {
   }
 
   criarDataset(event){
+    console.log('criarDataset ', this.newName);
     if(this.newName){
-      // console.log('name ', this.newName);
       this.criandoDataset = true;
       this.startedDataset = {
         id: this.newName,
@@ -38,12 +46,14 @@ export class AppComponent {
 
   saveDataset(event){
     if(this.startedDataset){
-      // console.log('name ', this.newName);
+      generateTargets(this.startedDataset)
       this.datasets.push(this.startedDataset);
+      console.log('saveDataset ',  this.startedDataset);
+      // TODO MANDAR PARA O BACK SALVAR O DATASET
+      // this.imgService.saveDataset(this.startedDataset)
       this.criandoDataset = false;
       this.startedDataset = undefined
       this.selectedDataset = undefined;
-      // TODO MANDAR PARA O BACK SALVAR O DATASET
     }
   }
 

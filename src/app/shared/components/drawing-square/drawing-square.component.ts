@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
-import { getImageData, getBinaryData } from '../canvas';
-import { ImageDigitDatum } from '../../utils/drawing-square/image-digit-datum';
+import { getImageData, getBinaryData, getBinaryBipolarData } from '../canvas';
+import { ImgCharDatum } from '../../interfaces/image-digit-datum';
 
 @Component({
   selector: 'app-drawing-square',
@@ -105,13 +105,20 @@ export class DrawingSquareComponent implements OnInit {
       }
       console.log('vecIndexes ', vecIndexes);
       const rawData = this.ctx.getImageData(0, 0, this.w, this.h);
-      const imageBiData = getBinaryData(this.ctx, this.w, this.h);
+      // const imageBiData = getBinaryData(this.ctx, this.w, this.h);
+      const imageBiData = getBinaryBipolarData(this.ctx, this.w, this.h);
       const simpData = vecIndexes.map((d)=>imageBiData[d])
       console.log('image data', simpData  );
       
-      const datum: ImageDigitDatum = 
-      {id: this.idDatum, digit: parseInt(this.digitDatum), 
-        data: rawData, simpData: simpData  }
+      const datum: ImgCharDatum = 
+      {     
+        id: this.idDatum, 
+        char: this.digitDatum, 
+        data: rawData, 
+        h: this.h,
+        w: this.w,
+        inVector: simpData,
+      }
       return datum;
     }
   }

@@ -16,3 +16,10 @@ export function getBinaryData(ctx: CanvasRenderingContext2D, w: number, h:number
     );
   return data as unknown as (1|0)[];
 }
+
+export function getBinaryBipolarData(ctx: CanvasRenderingContext2D, w: number, h:number){
+  const data = getBlackWhiteData(ctx, w, h).map(d=>
+      d>128 ? 1 : -1
+    );
+  return data as unknown as (1|-1)[];
+}

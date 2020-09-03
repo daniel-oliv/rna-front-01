@@ -4,14 +4,14 @@
   (mousedown)="findxy($event, 'down')"
   (mouseout)="findxy($event, 'out')"
   (mousedown)="findxy($event, 'down')"
-  style="position:absolute;top:10%;left:10%;border:2px solid;">
+  style="position:relative;top:10%;left:10%;border:2px solid;">
 </canvas>
 
 <img id="canvasimg" #canvasimg style="position:absolute;top:10%;left:52%;" style="display:none;">
 <input type="button" value="save" id="btn" size="30" 
   (onclick)="saveInDataSet()" 
-  style="position:absolute;top:55%;left:10%;"
+  style="position:relative;top:55%;left:10%;"
 >
 <input type="button" value="clear" id="clr" size="23" 
-  (onclick)="erase()" style="position:absolute;top:55%;left:15%;"
+  (onclick)="erase()" style="position:relative;top:55%;left:15%;"
 >

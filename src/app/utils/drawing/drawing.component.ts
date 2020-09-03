@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { getImageData } from '../canvas';
 
 @Component({
   selector: 'app-drawing',
@@ -63,14 +64,15 @@ export class DrawingComponent implements OnInit {
   }
     
   saveInDataSet() {
-      this.imageElementRef.nativeElement.style.border = "2px solid";
-      var dataURL = this.canvas.toDataURL();
-      this.imageElementRef.nativeElement.src = dataURL;
-      this.imageElementRef.nativeElement.style.display = "inline";
+      // this.imageElementRef.nativeElement.style.border = "2px solid";
+      // var dataURL = this.canvas.toDataURL();
+      // this.imageElementRef.nativeElement.src = dataURL;
+      // this.imageElementRef.nativeElement.style.display = "inline";
+      console.log(getImageData(this.ctx, this.w, this.h));
   }
     
   findxy(e, res) {
-    console.log('res ', res);
+    // console.log('res ', res);
     if (res == 'down') {
         this.prevX = this.currX;
         this.prevY = this.currY;

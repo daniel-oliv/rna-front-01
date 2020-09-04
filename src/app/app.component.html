@@ -29,6 +29,11 @@
         (click)="criarDataset($event)" >Criar dataset</button>
       </div>
       <div class="col">
+        <button  [hidden]="!selectedDataset"
+        class="btn btn-primary"
+        (click)="copiarDataset($event)" >Copiar dataset</button>
+      </div>
+      <div class="col">
         <button 
         class="btn btn-primary"
         *ngIf="selectedDataset || startedDataset"
@@ -50,6 +55,21 @@
       <app-drawing-square 
       (returnDatum$)= "addDatum($event)">
       </app-drawing-square>
+    </div>
+
+    <div class="row"
+    *ngIf="showData && selectedDataset"
+    >
+      <!-- add image to dataset -->
+      <!-- <button *ngIf="selectedDataset" (click)="addDatum($event)" >Adicionar nova imagem ao dataset</button><br><br> -->
+      <div class="col-6" 
+      *ngFor="let c of (selectedDataset.data)"
+      >
+        <app-drawing-square
+        [img-input] = "c"
+        (returnDatum$)= "addDatum($event)">
+        </app-drawing-square>
+      </div>
     </div>
     
   </pai-tab>
@@ -81,6 +101,21 @@
         (click)="testar($event)"
         >Testar rede</button>
       </div>
+      <div class="col-2">
+        <label class="label label-default"  for="theta">Theta: </label>
+        <input name="theta" type="text" 
+        [(ngModel)]="theta">
+      </div>
+      <div class="col-2">
+        <label class="label label-default"  for="leaningRate">Taxa de aprendizado: </label>
+        <input name="leaningRate" type="text" 
+        [(ngModel)]="leaningRate">
+      </div>
+    </div>
+    <br><br>
+    <div *ngIf="result" class="row">
+      
+      <p>{{result|json}}</p>       
     </div>
 
   </pai-tab>

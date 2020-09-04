@@ -1,7 +1,7 @@
 export interface ImgCharDatum{
   id:string,
   char?: string
-  data: ImageData,
+  // data: ImageData,
   h: number;
   w: number;
   inVector: (1|-1)[],

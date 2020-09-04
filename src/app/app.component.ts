@@ -23,6 +23,7 @@ export class AppComponent {
   netDataset: Dataset;
   theta: number = 0;
   leaningRate: number = 1;
+  showData = false; 
 
   constructor(
 
@@ -37,6 +38,8 @@ export class AppComponent {
 
   mostrarDataset(event){
     // TODO fazer component que mostra imagens (ngFor com img) 
+    this.showData = !this.showData;
+
   }
 
   treinar(e){
@@ -47,6 +50,16 @@ export class AppComponent {
   testar(e){
     this.imgService.testNet((res)=>{this.result = res;console.log('treinar ', res)}, 
     this.netDataset.id,this.theta)
+  }
+
+  copiarDataset(e){
+    console.log('copiarDataset ', this.newName);
+    if(this.newName){
+      this.startedDataset= {id: this.newName, data:this.selectedDataset.data.concat()}
+      this.selectedDataset = this.startedDataset;
+      this.saveDataset(undefined)
+      this.newName='';
+    }
   }
 
   criarDataset(event){
@@ -79,8 +92,21 @@ export class AppComponent {
 
   addDatum(e){
     console.log('addDatum ', e);
-    if(this.startedDataset)this.startedDataset.data.push(e);
-    else if(this.selectedDataset)this.selectedDataset.data.push(e);
+    let dataset: Dataset;
+    if(this.startedDataset)dataset = this.startedDataset;
+    else if(this.selectedDataset)dataset = this.selectedDataset;
+    
+    for (let i = 0; i < dataset.data.length; i++) {
+      if(dataset.data[i].id === e.id){
+        dataset.data.splice(i, 1, e);
+        break;
+      }
+    }
+
+    if(this.selectedDataset){
+      this.startedDataset = this.selectedDataset;
+      this.saveDataset(undefined)
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 <div class="row" style="margin-top: 50px;">
-  <input type="button" value="Adicionar imagem" id="btn" size="30" 
+  <input type="button" value="Adicionar nova imagem ao dataset" id="btn" size="30" 
   (click)="addToDataset()" 
   >
   <input type="button" value="Limpar" id="clr" size="23" 
@@ -16,7 +16,7 @@
   </div>
   
   <div class="label label-default" class="col">
-    <label for="digitDatum">Insira dígito target: </label>
+    <label for="digitDatum">Insira dígito target (para treinamento): </label>
     <input name="digitDatum" type="text" 
     [(ngModel)]="digitDatum"
     >

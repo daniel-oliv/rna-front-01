@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { getImageData } from '../canvas';
+import { getImageData, getBlackWhiteData } from '../canvas';
 
 @Component({
   selector: 'app-drawing',
@@ -27,6 +27,8 @@ export class DrawingComponent implements OnInit {
   x = "black";
   y = 2;
   w: number; h: number;
+
+  @Input('img-input') imgInput: ImageData;
     
   ngAfterViewInit() {
     this.canvas = this.canvasRef.nativeElement;
@@ -34,6 +36,9 @@ export class DrawingComponent implements OnInit {
     this.w = this.canvas.width;
     // this.y = 100;
     this.h = this.canvas.height;
+    if(this.imgInput){
+      this.ctx.putImageData(this.imgInput, 0, 0);
+    }
   }
 
   draw() {

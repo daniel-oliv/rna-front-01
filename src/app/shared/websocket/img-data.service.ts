@@ -34,7 +34,7 @@ export class ImgDataService {
     console.log('url ', this.url);
     const params = {res:'trainNet',theta, learningRate, datasetID};
     let res;
-    hpOnce(this.wsService.get(this.url, params),
+    hpOnce(this.wsService.post(this.url, params),
     (value)=>{
       console.log('value ', value);
       if(value) res = value;
@@ -48,7 +48,7 @@ export class ImgDataService {
     console.log('url ', this.url);
     const params = {res:'testNet',datasetID, theta};
     let res;
-    hpOnce(this.wsService.get(this.url, params),
+    hpOnce(this.wsService.post(this.url, params),
     (value)=>{
       console.log('value ', value);
       if(value.body) res = value.body;

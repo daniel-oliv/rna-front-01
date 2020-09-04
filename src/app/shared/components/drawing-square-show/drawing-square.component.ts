@@ -3,7 +3,7 @@ import { getBinaryBipolarData } from '../canvas';
 import { ImgCharDatum } from '../../interfaces/image-digit-datum';
 
 @Component({
-  selector: 'app-drawing-square',
+  selector: 'app-drawing-square-show',
   templateUrl: './drawing-square.component.html',
   styleUrls: ['./drawing-square.component.css']
 })
@@ -31,9 +31,6 @@ export class DrawingSquareComponent implements OnInit {
   nCols;
   nLines;
   maxXY: number[];
-
-  @Input('img-input') simpData:ImgCharDatum;
-  simMtx: (-1|1)[][];
     
   ngAfterViewInit() {
     this.canvas = <HTMLCanvasElement>this.canvasRef.nativeElement;
@@ -46,34 +43,6 @@ export class DrawingSquareComponent implements OnInit {
     this.maxXY = [this.nCols, this.nLines]
     console.log('nCols ', this.nCols);
     console.log('nLines ', this.nLines);
-
-    if(this.simpData){
-      console.log(this.simpData)
-      this.digitDatum = this.simpData.char;
-      this.idDatum = this.simpData.id;
-      this.drawInitial(this.simpData.inVector)
-      // this.ctx.putImageData(this.imgInput, 0, 0);
-    }
-  }
-
-  drawInitial(simpData: (-1|1)[]){
-    console.log('drawInitial');
-    // this.simMtx = []
-    for (let i = 0; i < this.nLines; i++) {
-      const line = []
-      // this.simMtx.push(line);
-      for (let j = 0; j < this.nCols; j++) {
-        const bit = simpData[j+i*this.nCols]
-        line.push(bit)
-        if (bit>0) {
-          //* j é x
-          this.drawSquare([j*this.wSquare, i*this.wSquare])
-        }
-        else{
-        }
-      }
-    }
-    // console.log('this.simMtx ', this.simMtx);
   }
 
   draw() {
@@ -104,8 +73,8 @@ export class DrawingSquareComponent implements OnInit {
 
 
 
-  drawSquare(squareCoord: number[]) {
-    console.log('drawSquare ', squareCoord)
+  drawSquare() {
+    const squareCoord = this.xy2SquareBegin(this.currX, this.currY);
     this.ctx.beginPath();
     this.ctx.fillStyle = 'black';
     this.ctx.fillRect(squareCoord[0], squareCoord[1], this.wSquare, this.wSquare);
@@ -178,8 +147,7 @@ export class DrawingSquareComponent implements OnInit {
       this.flag = true;
       this.dot_flag = true;
       if (this.dot_flag) {
-        const squareCoord = this.xy2SquareBegin(this.currX, this.currY);
-        this.drawSquare(squareCoord);
+        this.drawSquare();
         this.dot_flag = false;
       }
   }
@@ -193,8 +161,7 @@ export class DrawingSquareComponent implements OnInit {
           // this.currX = e.clientX - this.canvas.offsetLeft;
           this.currX = e.clientX - this.canvas.getBoundingClientRect().left;
           this.currY = e.clientY - this.canvas.getBoundingClientRect().top;
-          const squareCoord = this.xy2SquareBegin(this.currX, this.currY);
-          this.drawSquare(squareCoord);
+          this.drawSquare();
       }
     }
   }

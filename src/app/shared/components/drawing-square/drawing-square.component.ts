@@ -58,10 +58,10 @@ export class DrawingSquareComponent implements OnInit {
 
   drawInitial(simpData: (-1|1)[]){
     console.log('drawInitial');
-    // this.simMtx = []
+    const simMtx = []
     for (let i = 0; i < this.nLines; i++) {
       const line = []
-      // this.simMtx.push(line);
+      simMtx.push(line);
       for (let j = 0; j < this.nCols; j++) {
         const bit = simpData[j+i*this.nCols]
         line.push(bit)
@@ -73,6 +73,7 @@ export class DrawingSquareComponent implements OnInit {
         }
       }
     }
+    this.simMtx = simMtx;
     // console.log('this.simMtx ', this.simMtx);
   }
 
@@ -99,17 +100,33 @@ export class DrawingSquareComponent implements OnInit {
   }
 
   xy2SquareBegin(x: number, y: number){
-    return this.xyToSquare(x, y).map(d=>d*this.wSquare);;
+    return this.xyToSquare(x, y).map(d=>d*this.wSquare);
   }
 
 
 
-  drawSquare(squareCoord: number[]) {
+  drawSquare(squareCoord: number[], change =false) {
+    let color = 'black';
     console.log('drawSquare ', squareCoord)
     this.ctx.beginPath();
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillRect(squareCoord[0], squareCoord[1], this.wSquare, this.wSquare);
-    this.ctx.closePath();
+    if(this.simMtx && change){
+      const indexes = squareCoord.map(d=>d/this.wSquare).reverse();
+      console.log('indexes ', indexes);
+      const num = this.simMtx[indexes[0]][indexes[1]] 
+      if(num=== +1){
+        this.ctx.clearRect(squareCoord[0], squareCoord[1], this.wSquare, this.wSquare);
+      }
+      this.simMtx[indexes[0]][indexes[1]]=(<unknown>(num*-1) as -1|1)
+      console.log('num ', num);
+      console.log("this.simMtx[indexes[0]][indexes[1]]", this.simMtx[indexes[0]][indexes[1]])
+
+    }else{
+      console.log('color ', color);
+      this.ctx.fillStyle = color;
+      this.ctx.fillRect(squareCoord[0], squareCoord[1], this.wSquare, this.wSquare);
+      this.ctx.closePath();
+    }
+    
   }
     
   erase(m = confirm("Want to clear")) {
@@ -168,6 +185,7 @@ export class DrawingSquareComponent implements OnInit {
     //console.log('res ', res);
     //console.log('xy ', [this.currX,this.currY]);
     //console.log('square ', this.xyToSquare(this.currX, this.currY));
+    console.log('res', res);
     if (res == 'down') {
         this.prevX = this.currX;
         this.prevY = this.currY;
@@ -183,8 +201,15 @@ export class DrawingSquareComponent implements OnInit {
         this.dot_flag = false;
       }
   }
+  if (res == 'up'){
+    if (this.flag) {
+      const squareCoord = this.xy2SquareBegin(this.currX, this.currY);
+      this.drawSquare(squareCoord, true);
+      this.dot_flag = false;
+    }
+  }
   if (res == 'up' || res == "out") {
-      this.flag = false;
+    this.flag = false;
   }
   if (res == 'move') {
       if (this.flag) {

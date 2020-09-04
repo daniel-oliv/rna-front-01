@@ -77,7 +77,14 @@ export class AppComponent {
   saveDataset(event){
     if(this.startedDataset){
       generateTargets(this.startedDataset)
-      this.datasets.push(this.startedDataset);
+      for (let i = 0; i < this.datasets.length; i++) {
+        if(this.datasets[i].id === this.startedDataset.id){
+          break;
+        }
+        if(i === this.datasets.length-1){
+          this.datasets.push(this.startedDataset);
+        }
+      }
       console.log('saveDataset ',  this.startedDataset);
       // TODO MANDAR PARA O BACK SALVAR O DATASET
       hpOnce(this.imgService.saveDataset(this.startedDataset),
@@ -100,6 +107,9 @@ export class AppComponent {
       if(dataset.data[i].id === e.id){
         dataset.data.splice(i, 1, e);
         break;
+      }
+      if(i === dataset.data.length-1){
+        dataset.data.push(e);
       }
     }
 

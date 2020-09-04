@@ -2,7 +2,7 @@ import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 import { Injectable } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
-import { WsMsg, WsEventMsg, WsRestMsg } from './ws-msg';
+import { WsMsg, WsEventMsg, WsRestMsg, WsAck } from './ws-msg';
 
 @Injectable({
   providedIn: 'root'
@@ -45,21 +45,13 @@ export class WebsocketService {
   }
 
   //! Important to unsubscribe to the Observable on ngOnDestroy
-  doObs(msg: WsMsg){
-    let unSubData: WsEventMsg = {type: 'unsubscribe', url:msg.url}
+  doObsOnce(msg: WsRestMsg){
+    let unSubData: WsAck = {type: 'END', url:msg.url}
+    console.log('doObsOnce -------------');
+    //delete msg.params
     return this.socket.multiplex(
-      ()=>{return msg},
-      ()=>{return unSubData},
-      (serverMsg:WsEventMsg)=>{console.log(`filter multiplex msg`, serverMsg);
-        return serverMsg.url && serverMsg.url === msg.url});
-  }
-
-  //! Important to unsubscribe to the Observable on ngOnDestroy
-  doObsOnce(msg: WsMsg){
-    let unSubData: WsEventMsg = {type: 'unsubscribe', url:msg.url}
-    return this.socket.multiplex(
-      ()=>{return msg},
-      ()=>{return unSubData},
+      ()=>{console.log('sub');return msg},
+      undefined/* ()=>{console.log('unsub');return unSubData} */,
       (serverMsg:WsEventMsg)=>{console.log(`filter multiplex msg`, serverMsg);
         return serverMsg.url && serverMsg.url === msg.url});
   }
@@ -69,10 +61,10 @@ export class WebsocketService {
   }
 
   public get(url: string, params?: any) {
-    this.socket.next({type: 'GET', url, params} as WsRestMsg)
+    return this.doObsOnce({type: 'GET', url, params} as WsRestMsg);
   }
   public post(url: string, params?: any) {
-    this.socket.next({type: 'POST', url, params} as WsRestMsg)
+    return this.doObsOnce({type: 'POST', url, params} as WsRestMsg);
   }
   public delete(url: string, params?: any) {
     this.socket.next({type: 'DELETE', url, params} as WsRestMsg)

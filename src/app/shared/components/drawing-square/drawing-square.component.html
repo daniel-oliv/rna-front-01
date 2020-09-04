@@ -1,29 +1,47 @@
-<label for="idDatum">Insira um id: </label>
-<input name="idDatum" type="text" 
-[(ngModel)]="idDatum"
->
-
-<label for="digitDatum">Insira dígito target (para treinamento): </label>
-<input name="digitDatum" type="text" 
-[(ngModel)]="digitDatum"
->
-
-<canvas id="can" #can
-  width="350" height="490" 
-  (mousemove)="findxy($event, 'move')"
-  (mousedown)="findxy($event, 'down')"
-  (mouseout)="findxy($event, 'out')"
-  (mouseup)="findxy($event, 'up')"
-  (mousedown)="findxy($event, 'down')"
-  style="position:relative;top:10%;left:10%;border:2px solid;">
-</canvas>
-
-<img id="canvasimg" #canvasimg style="position:relative;top:10%;left:52%;" style="display:none;">
-<br>
-<input type="button" value="Adicionar nova imagem ao dataset" id="btn" size="30" 
+<div class="row" style="margin-top: 50px;">
+  <input type="button" value="Adicionar nova imagem ao dataset" id="btn" size="30" 
   (click)="addToDataset()" 
-  style="position:relative;top:55%;left:10%;"
->
-<input type="button" value="Limpar" id="clr" size="23" 
-  (click)="erase()" style="position:relative;top:55%;left:15%;"
->
+  >
+  <input type="button" value="Limpar" id="clr" size="23" 
+    (click)="erase()"
+  >
+</div>
+
+<div class="row" style="margin-top: 20px;">  
+  <div class="col">
+    <label class="label label-default" for="idDatum">Insira um id: </label><br>
+    <input name="idDatum" type="text" 
+    [(ngModel)]="idDatum"
+    >
+  </div>
+  
+  <div class="label label-default" class="col">
+    <label for="digitDatum">Insira dígito target (para treinamento): </label>
+    <input name="digitDatum" type="text" 
+    [(ngModel)]="digitDatum"
+    >
+  </div>
+</div>
+
+<div class="row" style="margin-top: 20px;margin-bottom: 20px;">  
+    <canvas id="can" #can
+    width="350" height="490" 
+    (mousemove)="findxy($event, 'move')"
+    (mousedown)="findxy($event, 'down')"
+    (mouseout)="findxy($event, 'out')"
+    (mouseup)="findxy($event, 'up')"
+    (mousedown)="findxy($event, 'down')"
+    style="position:relative;top:10%;left:10%;border:2px solid;">
+  </canvas>
+
+  <img id="canvasimg" #canvasimg style="position:relative;top:10%;left:52%;" style="display:none;">
+  <br>
+</div>
+
+
+
+
+
+
+
+

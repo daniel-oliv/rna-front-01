@@ -3,13 +3,18 @@ import { Input, Component } from '@angular/core';
 @Component({
   selector: 'pai-tabs',
   template: `
-    <ul>
-      <li *ngFor="let tab of tabs" (click)="selectTab(tab)">
+  <div class="container">
+    <ul class="nav nav-tabs" >
+      <li
+      class="nav-item nav-link" 
+        *ngFor="let tab of tabs" (click)="selectTab(tab)">
         {{tab.tabTitle}}
       </li>
     </ul>
     <ng-content></ng-content>
+    </div>
   `,
+  styleUrls: ['./simple.component.css']
 })
 export class Tabs {
   tabs: Tab[] = [];

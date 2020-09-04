@@ -11,3 +11,7 @@ export interface WsEventMsg extends WsMsg{
 export interface WsRestMsg extends WsMsg{
   type: 'GET'|'PUT'|'DELETE'|'POST',
 }
+
+export interface WsAck extends WsMsg{
+  type: 'END',
+}

@@ -1,42 +1,87 @@
-<label for="newDataset">Insira o nome: </label>
-<input name="newDataset" type="text" 
-[(ngModel)]="newName"
->
+<pai-tabs>
+  <pai-tab tabTitle="Datasets">
+    <br>
+    <div  [hidden]="!datasets?.length" class="row">
+      <div class="col">
+        <label for="selectDataset">Selecione ou crie um dataset: </label> 
+        <select name="selectDataset" [(ngModel)]="selectedDataset" >
+          <!-- <option value=null >Selecione ou crie um dataset</option> -->
+          <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
+        </select>
+        
+      </div>
+      <div class="col">
+      </div>
+      <br><br>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <label class="label label-default"  for="newDataset">Insira o nome: </label>
+        <input name="newDataset" type="text" 
+        [(ngModel)]="newName">
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col">
+        <button 
+        class="btn btn-primary"
+        (click)="criarDataset($event)" >Criar dataset</button>
+      </div>
+      <div class="col">
+        <button 
+        class="btn btn-primary"
+        *ngIf="selectedDataset || startedDataset"
+        (click)="mostrarDataset($event)" >Mostrar dataset</button>
+      </div>
+      <div class="col">
+        <button 
+        class="btn btn-primary"
+        *ngIf="startedDataset?.data[0]"
+        (click)="saveDataset($event)" >Salvar dataset</button>
+      </div>
+    </div>
 
-<button 
-class="btn btn-primary"
-(click)="criarDataset($event)" >Criar dataset</button>
-<button 
-class="btn btn-primary"
-*ngIf="selectedDataset?.data[0]"
-(click)="saveDataset($event)" >Salvar dataset</button>
-<br>
-<br><br>
+    <div class="row"
+    *ngIf="startedDataset || selectedDataset"
+    >
+      <!-- add image to dataset -->
+      <!-- <button *ngIf="selectedDataset" (click)="addDatum($event)" >Adicionar nova imagem ao dataset</button><br><br> -->
+      <app-drawing-square 
+      (returnDatum$)= "addDatum($event)">
+      </app-drawing-square>
+    </div>
+    
+  </pai-tab>
+  <pai-tab tabTitle="Rede Neural">
+    <br>
+    <div  [hidden]="!datasets?.length" class="row">
+      <div class="col">
+        <label for="netDataset">Selecione um dataset: </label> 
+        <select name="netDataset" [(ngModel)]="netDataset" >
+          <!-- <option value=null >Selecione ou crie um dataset</option> -->
+          <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
+        </select>
+        
+      </div>
+      <div class="col">
+      </div>
+      <br><br>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <button
+        class="btn btn-primary"
+        (click)="treinar($event)"
+        >Treinar rede</button>
+      </div>
+      <div class="col-2">
+        <button
+        class="btn btn-primary"
+        (click)="testar($event)"
+        >Testar rede</button>
+      </div>
+    </div>
 
-<label for="selectDataset">Selecione ou crie um dataset: </label>
-
-<select name="selectDataset" [(ngModel)]="selectedDataset" >
-  <!-- <option value=null >Selecione ou crie um dataset</option> -->
-  <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
-</select>
-<br><br>
-<button 
-class="btn btn-primary"
-*ngIf="selectedDataset"
-(click)="mostrarDataset($event)" >Mostrar dataset</button>
-<br>
-<button
-class="btn btn-primary"
->Treinar rede</button>
-<br>
-<button
-class="btn btn-primary"
->Testar rede</button>
-
-<br><br><br>
-
-<!-- add image to dataset -->
-<!-- <button *ngIf="selectedDataset" (click)="addDatum($event)" >Adicionar nova imagem ao dataset</button><br><br> -->
-<app-drawing-square *ngIf="selectedDataset"
-  (returnDatum$)= "addDatum($event)">
-</app-drawing-square>
+  </pai-tab>
+</pai-tabs>

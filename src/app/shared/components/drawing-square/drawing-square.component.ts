@@ -76,7 +76,7 @@ export class DrawingSquareComponent implements OnInit {
   drawSquare() {
     const squareCoord = this.xy2SquareBegin(this.currX, this.currY);
     this.ctx.beginPath();
-    this.ctx.fillStyle = this.x;
+    this.ctx.fillStyle = 'black';
     this.ctx.fillRect(squareCoord[0], squareCoord[1], this.wSquare, this.wSquare);
     this.ctx.closePath();
   }

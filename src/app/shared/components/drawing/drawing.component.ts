@@ -22,6 +22,7 @@ export class DrawingComponent implements OnInit {
   prevY = 0;
   currY = 0;
   dot_flag = false;
+  color = false;
 
   x = "black";
   y = 2;
@@ -81,13 +82,14 @@ export class DrawingComponent implements OnInit {
 
       this.flag = true;
       this.dot_flag = true;
-      if (this.dot_flag) {
+      // if (this.dot_flag) {
           this.ctx.beginPath();
-          this.ctx.fillStyle = this.x;
+          this.ctx.fillStyle = this.color ? 'while' : 'black';
+          this.color = !this.color;
           this.ctx.fillRect(this.currX, this.currY, 2, 2);
           this.ctx.closePath();
           this.dot_flag = false;
-      }
+      // }
   }
   if (res == 'up' || res == "out") {
       this.flag = false;

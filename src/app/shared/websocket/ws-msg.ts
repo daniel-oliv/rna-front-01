@@ -1,11 +1,19 @@
+import { randomInt } from "../helpers/common";
+
 export interface WsMsg{
   type: string,
   url: string
+  id?: number;
   params?: any;
+  body?: any
 }
 
 export interface WsEventMsg extends WsMsg{
   type: 'subscribe' | 'unsubscribe',
+}
+
+export function wsEventMsgFac(msg: WsEventMsg): WsEventMsg{
+  return Object.assign({}, msg,{id:randomInt(1000000)})
 }
 
 export interface WsRestMsg extends WsMsg{
@@ -13,5 +21,5 @@ export interface WsRestMsg extends WsMsg{
 }
 
 export interface WsAck extends WsMsg{
-  type: 'END',
+  type: 'END_OK'|'END_ERROR'|'DATA',
 }

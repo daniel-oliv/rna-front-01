@@ -1,0 +1,79 @@
+<div class="card shadow-sm">
+  <div class="card-header">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active">Algoritmos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"></a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <div class="list-group list-group-flush">
+      <span  class="list-group-item list-group-item-action simulation-item" 
+      [class.selected-algorithm]="selectedAlgorithm?.name === algorithm.name"
+      (click)=setAlgorithm(algorithm) 
+      *ngFor = "let algorithm of algorithms">
+        {{algorithm.name}}
+      </span>
+    </div>
+  </div>
+</div>
+<br>
+<ng-container *ngIf = "selectedAlgorithm != undefined">
+  <table class="table table-bordered shadow-sm">
+    <thead class = "thead-dark">
+      <tr>
+        <th>Valor</th>
+        <th>Parâmetro</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let parameter of selectedAlgorithm.parameters">
+        <td class = "algorithm-name">{{parameter.label}}</td>
+        <td>
+          <div class="input-group input-group-sm mb-3">
+
+            <ng-container [ngSwitch]="parameter.input">
+
+              <ng-container *ngSwitchCase = "'text'">
+                <input type="text" class="form-control" [(ngModel)]="parameter.value">
+              </ng-container>
+
+              <ng-container *ngSwitchCase = "'select'">
+                <select class = "form-control"
+                [(ngModel)]="parameter.value"
+                >
+                  <option 
+                  *ngFor="let obj of parameter.options" 
+                  [ngValue]="obj">
+                    {{obj}}
+                  </option>
+                </select>
+              </ng-container>
+            </ng-container>
+
+            <ng-container [ngSwitch]="parameter.button">
+              <ng-container *ngSwitchCase = "'load'">
+                <div class="input-group-prepend">
+                  <button class="btn-param btn btn-outline-secondary" type="button">...</button>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class = "card card-footer">
+    <div class="form-row">
+      <div class="col-sm-12">
+        <div class = "d-flex flex-row-reverse bd-highlight p-2">
+          <button type="submit" class="btn btn-primary btn-sm m-1 p-1" (click)="train()" >Treinar rede</button>
+          <button type="submit" class="btn btn-primary btn-sm m-1 p-1" (click)="test()" >Testar rede</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

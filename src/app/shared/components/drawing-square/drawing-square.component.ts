@@ -27,7 +27,8 @@ export class DrawingSquareComponent implements OnInit {
   x = "black";
   y = 2;
   w: number; h: number;
-  wSquare = 40;
+  wSquare = 20;
+  // wSquare = 40;
   nCols;
   nLines;
   maxXY: number[];

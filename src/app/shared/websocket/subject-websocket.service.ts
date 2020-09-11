@@ -2,7 +2,9 @@ import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 import { Injectable } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
-import { WsMsg, WsEventMsg, WsRestMsg, WsAck } from './ws-msg';
+import { WsMsg, WsEventMsg, WsRestMsg, WsAck, wsEventMsgFac} from './ws-msg';
+import { copyProps } from '../helpers/object-utils';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,19 +36,35 @@ export class WebsocketService {
   }
 
   //! Important to unsubscribe to the Observable on ngOnDestroy
-  getEventObservable(url: string){
-    let subData: WsEventMsg = {type: 'subscribe', url:url}
-    let unSubData: WsEventMsg = {type: 'unsubscribe', url:url}
-    return this.socket.multiplex(
-      ()=>{return subData},
+  getEventObs<T>(url, params, func: (result: T)=>void){
+    const msg: WsEventMsg = wsEventMsgFac({type:'subscribe', url, params})
+    // let subData: WsEventMsg = {type: 'subscribe',}
+    let unSubData: WsEventMsg = copyProps({type: 'unsubscribe'}, msg, ['url', 'id'])
+    let sub: Subscription;
+    // let obs: Observable<T>;
+    const filterFn =  
+    (recMsg:WsAck)=>{
+      console.log(`filter multiplex msg`, msg);
+      if(recMsg.type == 'END_OK' || recMsg.type == 'END_ERROR' ) sub.unsubscribe();
+      return recMsg && recMsg.url === msg.url && recMsg.id === msg.id
+    }
+
+    const obs: Observable<WsAck> = this.socket.multiplex(
+      ()=>{return msg},
       ()=>{return unSubData},
-      (msg:WsEventMsg)=>{console.log(`filter multiplex msg`, msg);
-        return msg.url && msg.url === url});
+      filterFn
+      );
+
+    sub = obs.subscribe(
+      (recMsg)=>{func(recMsg.body)},
+      (err)=>{console.log('getEventObs() err ', err);}
+    )
+
   }
 
   //! Important to unsubscribe to the Observable on ngOnDestroy
   doObsOnce(msg: WsRestMsg){
-    let unSubData: WsAck = {type: 'END', url:msg.url}
+    let unSubData: WsAck = {type: 'END_OK', url:msg.url}
     console.log('doObsOnce -------------');
     //delete msg.params
     return this.socket.multiplex(

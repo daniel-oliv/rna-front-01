@@ -78,7 +78,7 @@
     <div  [hidden]="!datasets?.length" class="row">
       <div class="col">
         <label for="netDataset">Selecione um dataset: </label> 
-        <select name="netDataset" [(ngModel)]="netDataset" >
+        <select name="netDataset" [(ngModel)]="this.imgService.netDataset" >
           <!-- <option value=null >Selecione ou crie um dataset</option> -->
           <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
         </select>
@@ -89,7 +89,7 @@
       <br><br>
     </div>
     <div class="row">
-      <div class="col-2">
+      <!-- <div class="col-2">
         <button
         class="btn btn-primary"
         (click)="treinar($event)"
@@ -100,8 +100,8 @@
         class="btn btn-primary"
         (click)="testar($event)"
         >Testar rede</button>
-      </div>
-      <div class="col-2">
+      </div> -->
+      <!-- <div class="col-2">
         <label class="label label-default"  for="theta">Theta: </label>
         <input name="theta" type="text" 
         [(ngModel)]="theta">
@@ -110,13 +110,40 @@
         <label class="label label-default"  for="leaningRate">Taxa de aprendizado: </label>
         <input name="leaningRate" type="text" 
         [(ngModel)]="leaningRate">
-      </div>
+      </div> -->
     </div>
-    <br><br>
-    <div *ngIf="result" class="row">
+    <div class="col">
+      <app-simulations></app-simulations>
+    </div>
+    <br>
+    
+    <div *ngIf="imgService.result" class="row">
       
-      <p>{{result|json}}</p>       
+      <p>{{imgService.result|json}}</p>       
     </div>
+
+    <br>
+    
+    <div class="row">
+      <div class="col-6" 
+      *ngFor="let c of this.imgService.lineChartConfigs; let i = index"
+      >
+        <app-line-chart 
+        
+        [config] = "c"
+        [datasetsConfigs] = "this.imgService.lineChartSetsConfigs[i]"
+        [(datasetsMap)] = "this.imgService.lineChartsSets[i]"
+        [updateFlag] = "this.imgService.lineChartUpdate"
+        ></app-line-chart>
+
+      </div>
+      
+    </div>
+
+    <!-- <div *ngIf="imgService.trainData" class="row">
+      
+      <p>{{imgService.trainData|json}}</p>       
+    </div> -->
 
   </pai-tab>
 </pai-tabs>

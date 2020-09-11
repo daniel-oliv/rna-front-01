@@ -1,0 +1,143 @@
+/*
+ * Sidebar
+ */
+
+ .sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  margin-left: 10px;
+}
+
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
+  }
+}
+
+.sidebar-sticky {
+  position: absolute;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+.sidebar .nav-link {
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+.nav-item-content {
+  cursor: pointer;
+}
+
+.sidebar-checkbox {
+  margin-right: 5px;
+}
+
+.sidebar-link {
+  cursor: pointer;
+  color: blue;
+}
+
+.sidebar-link:hover {
+  text-decoration: underline;
+  color: blue;
+}
+
+.sidebar-section {
+  cursor: pointer;
+}
+
+.collapsing {
+  transition: none !important;
+}
+
+.tree {
+  margin-left: 15px;
+}
+
+.card {
+  border-radius: 0px;
+  font-size: 0.85em;
+  padding: 1px;
+  margin-bottom:5px;
+}
+
+.card-header {
+  padding-left: 6px;
+  padding-right: 5px;
+  padding-bottom: 1.5px;
+  padding-top: 1.5px;
+  font-size: 1.0em;
+  border-radius: 0px;
+  background: rgb(200,200,200);
+  background: linear-gradient(90deg, rgba(200,200,200,1) 0%, rgb(119, 117, 116) 36%, rgb(34, 33, 32) 100%);
+  color: white
+}
+
+.card-sub-header {
+  height: 15px;
+  padding: 1px;
+}
+
+.form-control {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+.card-body {
+  position: sticky;
+  padding: 1px;
+  max-height: 300px;
+  overflow: auto;
+}
+.form-control {
+  border-radius: 0px;
+}
+
+.content-of-card {
+  margin-bottom: 1px;
+}
+
+.card-footer {
+  padding: 1px;
+}
+
+.form-control {
+  font-size: 0.95em;
+}
+
+.btn {
+  padding: .08rem 0.5rem;
+}

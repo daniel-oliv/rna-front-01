@@ -6,16 +6,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DrawingSquareComponent } from 'src/app/shared/components/drawing-square/drawing-square.component'
 import { Tab, Tabs } from './shared/components/tab-painel/simple.component';
+import { SimulationsComponent } from './shared/components/simulations/simulations.component';
+import { ChartModule } from './shared/components/chart/chart.module';
 @NgModule({
   declarations: [
     AppComponent,
     DrawingSquareComponent,
-    Tab, Tabs
+    Tab, Tabs,
+    SimulationsComponent
   ],
   imports: [
     FormsModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

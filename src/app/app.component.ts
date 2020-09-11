@@ -4,6 +4,12 @@ import { Dataset } from './shared/interfaces/dataset';
 import { ImgDataService } from './shared/websocket/img-data.service';
 import { generateTargets } from './shared/helpers/dataset';
 import {hpOnce} from 'src/app/shared/helpers/observable'
+import {takeUntil} from 'rxjs/operators'
+import { Subject } from 'rxjs';
+import { LineChartSetConfig, Config } from './shared/components/chart/line-chart/line-chart.component';
+import * as d3 from 'd3';
+import { hourTick } from './shared/components/chart/tick-formatters';
+import { randomInt } from './shared/helpers/common';
 
 @Component({
   selector: 'app-root',
@@ -18,23 +24,48 @@ export class AppComponent {
   criandoDataset = false;
   startedDataset: Dataset;
   newName: string;
-  result: string;
+  // result: string;
 
-  netDataset: Dataset;
-  theta: number = 0;
-  leaningRate: number = 1;
+  // netDataset: Dataset;
+  // theta: number = 0;
+  // leaningRate: number = 1;
   showData = false; 
+
+  private unsubscribe$ = new Subject();
 
   constructor(
 
-  private imgService:  ImgDataService
+  public imgService:  ImgDataService
   
   ){}
 
   ngOnInit(){
+    // this.imgService.trainResult$.pipe(takeUntil(this.unsubscribe$))
     //TODO baixar datasets do back
     this.imgService.getAllDataset((datasets)=>{console.log('datasets.length ', datasets.length);this.datasets = datasets})
+    
+    // give everything a chance to get loaded before starting the animation to reduce choppiness
+    // setTimeout(() => {
+    //   this.generateData();
+
+    //   // change the data periodically
+    //   setInterval(() => this.generateData(), 3000);
+    // }, 8000);
   }
+
+  // generateData() {
+    
+  //   for (const set of this.imgService.lineChartsSets.values()) {
+  //     set.push(randomInt(6));
+  //   }
+  //   this.imgService.lineChartUpdate = !this.imgService.lineChartUpdate;
+  //   console.log('lineChartUpdate ', this.imgService.lineChartUpdate);
+  // }
+
+  ngOnDestroy(){
+    this.unsubscribe$.next(true);
+  }
+
 
   mostrarDataset(event){
     // TODO fazer component que mostra imagens (ngFor com img) 
@@ -42,15 +73,16 @@ export class AppComponent {
 
   }
 
-  treinar(e){
-    this.imgService.trainNet((res)=>{this.result = res;console.log('treinar ', res)},
-    this.netDataset.id, this.theta, this.leaningRate)
-  }
+  // treinar(e){
+  //   this.imgService.trainNet(
+  //     (res)=>{this.result = res;console.log('treinar ', res)},
+  //     this.netDataset.id)
+  // }
 
-  testar(e){
-    this.imgService.testNet((res)=>{this.result = res;console.log('treinar ', res)}, 
-    this.netDataset.id,this.theta)
-  }
+  // testar(e){
+  //   this.imgService.testNet((res)=>{this.result = res;console.log('treinar ', res)}, 
+  //   this.netDataset.id,this.theta)
+  // }
 
   copiarDataset(e){
     console.log('copiarDataset ', this.newName);
@@ -88,7 +120,7 @@ export class AppComponent {
       console.log('saveDataset ',  this.startedDataset);
       // TODO MANDAR PARA O BACK SALVAR O DATASET
       hpOnce(this.imgService.saveDataset(this.startedDataset),
-      (value)=>{this.result = value, console.log('value ', value);},
+      (value)=>{this.imgService.result = value, console.log('value ', value);},
       (err)=>{console.log('saveDataset() err ', err);}
       )
       this.criandoDataset = false;
@@ -113,10 +145,19 @@ export class AppComponent {
       }
     }
 
+    if(!dataset.data.length){
+      dataset.data.push(e);
+    }
+
+    console.log('this.startedDataset ', this.startedDataset);
+
     if(this.selectedDataset){
       this.startedDataset = this.selectedDataset;
       this.saveDataset(undefined)
     }
   }
+
+
+  
 
 }

@@ -1,0 +1,32 @@
+<div class="d3-tree-chart" #chart></div>
+
+<div 
+#menu
+style="position: absolute;"
+class="d3-tree-menu"
+[class.displaynone]="!isMenuVisible"
+>
+<div class="input-group input-group-sm mb-3">
+  <input 
+  list="valuesDataList"
+  [(ngModel)]='selectedChildID'
+  (change)="showSelectedLimiterChild()"
+  autocomplete="off"
+  name="value"
+  type="text" class="form-control" placeholder="Buscar" aria-label="Buscar">
+  <datalist id="valuesDataList">
+    <select>
+        <option *ngFor="let c of limiterChildrenIDs" [value]="c"></option>
+    </select>
+</datalist>
+
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button">-O</button>
+  </div>
+  <!-- <a (click)="search()" >Buscar </a> <br> -->
+<a (click)="showMore()" >Mostrar mais </a> <br>
+<a (click)="showLess()" >Mostrar menos </a> <br>
+<a (click)="showAll()" >Mostrar tudo </a> <br>
+</div>
+  
+</div>

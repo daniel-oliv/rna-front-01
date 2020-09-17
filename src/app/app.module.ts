@@ -8,6 +8,7 @@ import { DrawingSquareComponent } from 'src/app/shared/components/drawing-square
 import { Tab, Tabs } from './shared/components/tab-painel/simple.component';
 import { SimulationsComponent } from './shared/components/simulations/simulations.component';
 import { ChartModule } from './shared/components/chart/chart.module';
+
 @NgModule({
   declarations: [
     AppComponent,

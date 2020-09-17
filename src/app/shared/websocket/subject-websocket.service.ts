@@ -45,8 +45,11 @@ export class WebsocketService {
     const filterFn =  
     (recMsg:WsAck)=>{
       console.log(`filter multiplex msg`, msg);
-      if(recMsg.type == 'END_OK' || recMsg.type == 'END_ERROR' ) sub.unsubscribe();
-      return recMsg && recMsg.url === msg.url && recMsg.id === msg.id
+      console.log(`filter multiplex recMsg`, recMsg);
+      if(recMsg.type == 'END_OK' || recMsg.type == 'END_ERROR' ) setTimeout(()=>{sub.unsubscribe()},1000);
+      const isMine = recMsg && recMsg.url === msg.url && recMsg.id === msg.id;
+      console.log('isMine ', isMine);
+      return isMine;
     }
 
     const obs: Observable<WsAck> = this.socket.multiplex(

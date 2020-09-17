@@ -1,6 +1,6 @@
-import { Dataset } from '../interfaces/dataset';
+import { ImgCharDataset } from '../interfaces/dataset';
 
-export function generateTargets(dataset: Dataset){
+export function generateTargets(dataset: ImgCharDataset){
   const dsLen = dataset.data.length;
   for (let i = 0; i < dataset.data.length; i++) {
     const datum = dataset.data[i];

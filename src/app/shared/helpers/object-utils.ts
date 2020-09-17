@@ -1,4 +1,22 @@
-import { groupBy as groupByLodash, isEqual} from 'lodash';
+import { groupBy as groupByLodash, isEqual, transform} from 'lodash';
+
+
+export function neatJSONArray(obj: any): string{
+  const ret = JSON.stringify(obj, (key, value)=> {
+    // Filtering out properties
+    console.log('value ', value);
+    // if (Array.isArray(value) ) {
+    //   return value;
+    //   return JSON.stringify(value).replace(/[\"]/g, '');
+    // }
+    if (['fOuts', 'id', 'outs'].includes(key) ) {
+      return JSON.stringify(value).replace(/[\"]/g, '');
+    }
+    return value;
+  },2);
+  console.log('neatJSONArray ret ', ret);
+  return ret;
+}
 
 export function forAssign(arr: any[], fun: Function, options?:any){
   arr.forEach((element,index,arra) => {
@@ -188,6 +206,14 @@ export const removeArr = <T>(item: T, arr:T[])=>{
 }
 
 export function copyProps(target, source, keys?: string[]){
+  if(!keys) keys = Object.keys(source)
+  for (const key of keys) {
+    target[key] = source[key]
+  }
+  return target;
+}
+
+export function copyPropsTransforming(target, source, keys?: string[], transform?: (d)=>any){
   if(!keys) keys = Object.keys(source)
   for (const key of keys) {
     target[key] = source[key]

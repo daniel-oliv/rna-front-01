@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WebsocketService } from './subject-websocket.service';
-import { Dataset } from 'src/app/shared/interfaces/dataset';
+import { Dataset, ImgCharDataset } from 'src/app/shared/interfaces/dataset';
 import { hpOnce } from '../helpers/observable';
 import { AnnParams } from '../interfaces/ann';
 import { SimulationGUI } from '../interfaces/simulation-gui';
@@ -15,7 +15,7 @@ import { removeArr } from '../helpers/object-utils';
 @Injectable({
   providedIn: 'root'
 })
-export class ImgDataService {
+export class ANNService {
 
   private readonly url = '/img-char-data' as const;
 
@@ -27,7 +27,7 @@ export class ImgDataService {
 
   algorithms;
   selectedAlgorithm: SimulationGUI;
-  netDataset: Dataset;
+  netDataset: ImgCharDataset;
   trainResult$: Subject<any>;
   result: string;
   trainData = [];
@@ -38,6 +38,9 @@ export class ImgDataService {
   lineChartSetsConfigs:LineChartSetConfig[][];
   lineChartsSets: Array< Map<string,any[]> >;
   lineChartUpdate = false;
+
+  sonarSet: Dataset = {id:'sonar', data:[]};
+  trainTestResult: {train: any, test:any}
 
   getAllDataset(func: Function){
     console.log('url ', this.url);
@@ -71,11 +74,47 @@ export class ImgDataService {
     return annParams as AnnParams;
   }
 
-  trainNet(){
-    console.log('trainNet()');
+  resetResults(){
     this.result = undefined;
+    this.trainTestResult = undefined;
     this.trainData = [];
     this.trainDataMap = undefined;
+  }
+
+  trainTest(){
+    console.log('trainAndTest()');
+    this.resetResults()
+    if(this.selectedAlgorithm && this.netDataset && this.netDataset.id){
+      console.log('url ', this.url);
+      const annParams: AnnParams = this.getAnnParams(this.selectedAlgorithm)
+      console.log('annParams ', annParams);
+      const params = {
+        res:'trainAndTestSonar',
+        datasetID: this.netDataset.id,
+        ann: annParams
+      };
+      this.wsService.getEventObs<any>(this.url, params, (res)=>{
+        console.log('chegou ', res);
+        if(res.test){ ///última mensagem
+          this.trainTestResult = res
+          res = res.train;
+        }
+        
+        this.trainData.push(res)
+        if(!this.trainDataMap){
+          this.initGraphs(res)
+        }else{
+          this.updateGraphs()
+        }
+        
+        // this.trainResult$.next(res)
+      })
+    }
+  }
+
+  trainNet(){
+    console.log('trainNet()');
+    this.resetResults()
     if(this.selectedAlgorithm && this.netDataset && this.netDataset.id){
       console.log('url ', this.url);
       const annParams: AnnParams = this.getAnnParams(this.selectedAlgorithm)
@@ -138,6 +177,7 @@ export class ImgDataService {
 
   testNet(){
     console.log('url ', this.url);
+    this.resetResults();
     const params = {res:'testNet',datasetID: this.netDataset.id};
     let res;
     hpOnce(this.wsService.post(this.url, params),
@@ -149,7 +189,7 @@ export class ImgDataService {
     )
   }
 
-  saveDataset(dataset: Dataset){
+  saveDataset(dataset: ImgCharDataset){
     console.log('url ', this.url);
     const params = {dataset, res:'dataset'};
     return this.wsService.post(this.url, params);

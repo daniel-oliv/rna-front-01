@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ImgCharDatum } from './shared/interfaces/image-digit-datum';
-import { Dataset } from './shared/interfaces/dataset';
-import { ImgDataService } from './shared/websocket/img-data.service';
+import { ImgCharDataset } from './shared/interfaces/dataset';
+import { ANNService } from './shared/websocket/ann.service';
 import { generateTargets } from './shared/helpers/dataset';
 import {hpOnce} from 'src/app/shared/helpers/observable'
 import {takeUntil} from 'rxjs/operators'
@@ -10,6 +10,7 @@ import { LineChartSetConfig, Config } from './shared/components/chart/line-chart
 import * as d3 from 'd3';
 import { hourTick } from './shared/components/chart/tick-formatters';
 import { randomInt } from './shared/helpers/common';
+import { neatJSONArray } from './shared/helpers/object-utils';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +19,11 @@ import { randomInt } from './shared/helpers/common';
 })
 export class AppComponent {
   title = 'rna-front';
-  datasets: Dataset[] = [];
-  selectedDataset: Dataset;
-
+  datasets: ImgCharDataset[] = [];
+  selectedDataset: ImgCharDataset;
+  neatJSONArray= neatJSONArray
   criandoDataset = false;
-  startedDataset: Dataset;
+  startedDataset: ImgCharDataset;
   newName: string;
   // result: string;
 
@@ -35,7 +36,7 @@ export class AppComponent {
 
   constructor(
 
-  public imgService:  ImgDataService
+  public imgService:  ANNService
   
   ){}
 
@@ -131,7 +132,7 @@ export class AppComponent {
 
   addDatum(e){
     console.log('addDatum ', e);
-    let dataset: Dataset;
+    let dataset: ImgCharDataset;
     if(this.startedDataset)dataset = this.startedDataset;
     else if(this.selectedDataset)dataset = this.selectedDataset;
     

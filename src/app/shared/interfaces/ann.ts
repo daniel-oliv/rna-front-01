@@ -5,12 +5,20 @@ export interface AnnParams{
   nOutputs: number; 
   initWeightsMode: InitWeightsMode;
   learningRate: number;
-  theta: number;
+  theta?: number;
+  setsLength: SetsLength
 }
 
-export type AnnType = 'Perceptron' | 'Adaline';
+export type AnnType = 'Perceptron' | 'Adaline' | 'Sigmoid Perceptron';
 
 export interface AdalineParams extends AnnParams{
+  maxEpoch: number;
+  dwAbsMin: number;
+}
+
+export interface SigmoidPerceptronParams extends AnnParams{
+  type: 'Sigmoid Perceptron'
+  sigma; // = 1
   maxEpoch: number;
   dwAbsMin: number;
 }
@@ -34,3 +42,9 @@ export interface InitWeightsRandom{
     initWLimit: number;
   };
 } 
+
+export interface SetsLength{
+  train: number
+  test: number
+  validation: number
+}

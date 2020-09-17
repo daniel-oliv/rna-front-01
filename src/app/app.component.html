@@ -5,7 +5,6 @@
       <div class="col">
         <label for="selectDataset">Selecione ou crie um dataset: </label> 
         <select name="selectDataset" [(ngModel)]="selectedDataset" >
-          <!-- <option value=null >Selecione ou crie um dataset</option> -->
           <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
         </select>
         
@@ -80,6 +79,7 @@
         <label for="netDataset">Selecione um dataset: </label> 
         <select name="netDataset" [(ngModel)]="this.imgService.netDataset" >
           <!-- <option value=null >Selecione ou crie um dataset</option> -->
+          <option [ngValue]="this.imgService.sonarSet">{{this.imgService.sonarSet?.id}} </option>
           <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
         </select>
         
@@ -122,6 +122,13 @@
       <p>{{imgService.result|json}}</p>       
     </div>
 
+    <div *ngIf="imgService.trainTestResult" class="row">
+      <textarea id="w3review" name="w3review" cols="800" rows='10' 
+      >
+      {{neatJSONArray(imgService.trainTestResult)}}
+      </textarea>
+    </div>
+    
     <br>
     
     <div class="row">

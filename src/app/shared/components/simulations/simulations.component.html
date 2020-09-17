@@ -72,6 +72,9 @@
         <div class = "d-flex flex-row-reverse bd-highlight p-2">
           <button type="submit" class="btn btn-primary btn-sm m-1 p-1" (click)="train()" >Treinar rede</button>
           <button type="submit" class="btn btn-primary btn-sm m-1 p-1" (click)="test()" >Testar rede</button>
+          <button *ngIf="this.imgService.netDataset?.id === 'sonar'"
+          type="submit" class="btn btn-primary btn-sm m-1 p-1" (click)="trainTest()" >Treinar e testar</button>
+
         </div>
       </div>
     </div>

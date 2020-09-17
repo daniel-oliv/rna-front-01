@@ -13,5 +13,11 @@ export interface ImgCharDatumToGuess
 
 }
 
+export interface Datum{
+  id: string|number;
+  inVector: number[];
+  targetVector: number[];
+}
+
 
 // TODO fazer guess no back (calcular a saída e dizer o dígito)

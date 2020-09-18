@@ -71,14 +71,14 @@ export class SimulationsComponent implements OnInit {
         {
           label: "Taxa de aprendizado",
           id:"learningRate",
-          value: 0.05,
+          value: 0.04,
           input: "text",
           button: null
         },
         {
           label: "Época máxima",
           id:"maxEpoch",
-          value: 1000,
+          value: 300,
           input: "text",
           button: null
         },

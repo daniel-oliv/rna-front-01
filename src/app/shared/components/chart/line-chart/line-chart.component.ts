@@ -42,7 +42,7 @@ export class LineChartComponent implements OnInit, AfterViewInit, OnChanges {
 
   constructor() { }
   ngOnInit(){
-    this.transition = function(){ return d3.transition().duration(100); }
+    this.transition = function(){ return d3.transition().duration(20); }
   }
 
   ngAfterViewInit() {

@@ -64,28 +64,28 @@ export class SimulationsComponent implements OnInit {
         {
           label: "Sigma",
           id:"sigma",
-          value: 1,
+          value: 0.1,
           input: "text",
           button: null
         },
         {
           label: "Taxa de aprendizado",
           id:"learningRate",
-          value: 0.01,
+          value: 0.05,
           input: "text",
           button: null
         },
         {
           label: "Época máxima",
           id:"maxEpoch",
-          value: 100,
+          value: 1000,
           input: "text",
           button: null
         },
         {
           label: "Mudança mínima nos pesos",
           id:"dwAbsMin",
-          value: 0.0001,
+          value: 0.000001,
           input: "text",
           button: null
         },

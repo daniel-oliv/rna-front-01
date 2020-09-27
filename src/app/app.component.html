@@ -80,6 +80,7 @@
         <select name="netDataset" [(ngModel)]="this.imgService.netDataset" >
           <!-- <option value=null >Selecione ou crie um dataset</option> -->
           <option [ngValue]="this.imgService.sonarSet">{{this.imgService.sonarSet?.id}} </option>
+          <option [ngValue]="this.imgService.irisSet">{{this.imgService.irisSet?.id}} </option>
           <option *ngFor="let c of datasets" [ngValue]="c">{{c?.id}}</option>
         </select>
         

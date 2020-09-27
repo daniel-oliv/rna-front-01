@@ -32,6 +32,19 @@ export class SimulationsComponent implements OnInit {
     this.imgService.trainTest()
   }
 
+  public trainCrossValidation(){
+    console.log(this.selectedAlgorithm)
+    this.imgService.trainCrossValidation()
+  }
+
+  isNewDataset(){
+    const newDatasets = ['sonar', 'iris']
+    if(!this.imgService.netDataset){
+      return false;
+    }
+    return newDatasets.includes(this.imgService.netDataset.id)
+  }
+
   test(){
     this.imgService.testNet()
   }
@@ -43,6 +56,89 @@ export class SimulationsComponent implements OnInit {
 
 
   public algorithms : SimulationGUI[] = [
+    {
+      name: 'Two Layer Perceptron',
+      parameters: [
+        {
+          label: "Inicialização dos pesos",
+          id:"initWeightsMode.name",
+          value: 'random',
+          input: "select",
+          options: ['random', 'zeros'],
+          button: null
+        },
+        {
+          label: "Limite inicialização randômica",
+          id:"initWeightsMode.wLimit",
+          value: 0.1,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Sigma hidden layer",
+          id:"hiddenSigma",
+          value: 0.9,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Sigma output layer",
+          id:"outSigma",
+          value: 0.9,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Neurônios na camada escondida",
+          id:"numHiddenNeurons",
+          value: 2,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Taxa de aprendizado",
+          id:"learningRate",
+          value: 0.1,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Época máxima",
+          id:"maxEpoch",
+          value: 300,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Mudança mínima nos pesos",
+          id:"dwAbsMin",
+          value: 0.000001,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Training Set Length",
+          id:"setsLength.train",
+          value: 120,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Test Set Length",
+          id:"setsLength.test",
+          value: 30,
+          input: "text",
+          button: null
+        },
+        {
+          label: "Validation Set Length",
+          id:"setsLength.validation",
+          value: 30,
+          input: "text",
+          button: null
+        },
+      ]
+    },
     {
       name: 'Sigmoid Perceptron',
       parameters: [

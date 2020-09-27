@@ -40,6 +40,7 @@ export class ANNService {
   lineChartUpdate = false;
 
   sonarSet: Dataset = {id:'sonar', data:[]};
+  irisSet: Dataset = {id:'iris', data:[]};
   trainTestResult: {train: any, test:any}
 
   getAllDataset(func: Function){
@@ -59,14 +60,16 @@ export class ANNService {
   getAnnParams(algorithmData: SimulationGUI): AnnParams{
     let annParams = {};
     for (const param of algorithmData.parameters) {
-      if(param.id.includes(".")){
+      if(param.id.includes('.')){
         const keys = param.id.split('.')
         if(!annParams[keys[0]]){
           annParams[keys[0]] = {}
         }
+        this.parseParamValue(param)
         annParams[keys[0]][keys[1]] = param.value;
       }
       else{
+        this.parseParamValue(param)
         annParams[param.id] = param.value
       }
     }
@@ -74,11 +77,20 @@ export class ANNService {
     return annParams as AnnParams;
   }
 
+  parseParamValue(param){
+    let value = param.value;
+    if(value !=='' && !isNaN(value)){
+      param.value = +value;
+    }
+    console.log('param ', param);
+  }
+
   resetResults(){
     this.result = undefined;
     this.trainTestResult = undefined;
     this.trainData = [];
     this.trainDataMap = undefined;
+    this.lineChartsSets = []
   }
 
   trainTest(){
@@ -89,12 +101,47 @@ export class ANNService {
       const annParams: AnnParams = this.getAnnParams(this.selectedAlgorithm)
       console.log('annParams ', annParams);
       const params = {
-        res:'trainAndTestSonar',
+        res:'trainAndTestMLP',
         datasetID: this.netDataset.id,
         ann: annParams
       };
       this.wsService.getEventObs<any>(this.url, params, (res)=>{
-        console.log('chegou ', res);
+        // console.log('chegou ', res);
+        if(res.test){ ///última mensagem
+          this.trainTestResult = res
+          res = res.train;
+        }
+        
+        this.trainData.push(res)
+        if(!this.trainDataMap){
+          this.initGraphs(res)
+        }else{
+          this.updateGraphs()
+        }
+        
+        // this.trainResult$.next(res)
+      })
+    }
+  }
+
+  trainCrossValidation(){
+    console.log('trainAndTest()');
+    this.resetResults()
+    if(this.selectedAlgorithm && this.netDataset && this.netDataset.id){
+      console.log('url ', this.url);
+      const annParams: AnnParams = this.getAnnParams(this.selectedAlgorithm)
+      console.log('annParams ', annParams);
+      const params = {
+        res:'trainCrossValidation',
+        datasetID: this.netDataset.id,
+        ann: annParams
+      };
+      this.wsService.getEventObs<any>(this.url, params, (res)=>{
+        // console.log('chegou ', res);
+        if(res.epoch===0 || res.epoch=== 1){
+          console.log('começou de novo');
+          this.resetResults();
+        }
         if(res.test){ ///última mensagem
           this.trainTestResult = res
           res = res.train;
@@ -125,7 +172,7 @@ export class ANNService {
         ann: annParams
       };
       this.wsService.getEventObs<any>(this.url, params, (res)=>{
-        console.log('chegou ', res);
+        // console.log('chegou ', res);
         this.trainData.push(res)
         if(!this.trainDataMap){
           this.initGraphs(res)

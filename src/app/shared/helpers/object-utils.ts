@@ -4,7 +4,7 @@ import { groupBy as groupByLodash, isEqual, transform} from 'lodash';
 export function neatJSONArray(obj: any): string{
   const ret = JSON.stringify(obj, (key, value)=> {
     // Filtering out properties
-    console.log('value ', value);
+    // console.log('value ', value);
     // if (Array.isArray(value) ) {
     //   return value;
     //   return JSON.stringify(value).replace(/[\"]/g, '');
@@ -14,7 +14,7 @@ export function neatJSONArray(obj: any): string{
     }
     return value;
   },2);
-  console.log('neatJSONArray ret ', ret);
+  // console.log('neatJSONArray ret ', ret);
   return ret;
 }
 

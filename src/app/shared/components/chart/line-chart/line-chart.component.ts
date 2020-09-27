@@ -59,7 +59,7 @@ export class LineChartComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   create(){
-    console.log('create()');
+    // console.log('create()');
     //this.dataArrays = this.dataSets.map(d=>d.array);
     const element = this.chartContainer.nativeElement;
     const svg = d3.select(element).append('svg')
@@ -69,9 +69,9 @@ export class LineChartComponent implements OnInit, AfterViewInit, OnChanges {
     this.width = this.config.boundWidth - this.margin.left - this.margin.right;
     this.height = this.config.boundHeight - this.margin.top - this.margin.bottom;
     
-    console.log('svg.attr(width)', (svg.node as any).getBBox)
-    console.log('width', this.width)
-    console.log('height', this.height);
+    // console.log('svg.attr(width)', (svg.node as any).getBBox)
+    // console.log('width', this.width)
+    // console.log('height', this.height);
 
     // chart plot area
     this.chart = svg.append('g')
@@ -150,7 +150,7 @@ export class LineChartComponent implements OnInit, AfterViewInit, OnChanges {
     
     this.lines =this.chart.selectAll(".line")
         .data(this.datasetsConfigs, (d)=>{return d.dataKey;});
-    console.log('this.lines ', this.lines);
+    // console.log('this.lines ', this.lines);
     this.lines.exit().remove();
     /// enter() selection
 
@@ -189,7 +189,7 @@ export class LineChartComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   printLegend(){
-    console.log('printLegend');
+    // console.log('printLegend');
     this.legend.selectAll("g").remove();
 
     this.datasetsConfigs.forEach((d, i)=>{

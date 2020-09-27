@@ -105,7 +105,7 @@ export class SimulationsComponent implements OnInit {
         {
           label: "Época máxima",
           id:"maxEpoch",
-          value: 300,
+          value: 100,
           input: "text",
           button: null
         },
